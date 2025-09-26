@@ -1,11 +1,13 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    <h2>{{ user.username|capitalize }}'s Profile</h2>
-    <a href="/">Home</a> / <a href="/logout">Log out</a>
-    <ul>
-        <li>Games Played: {{ user.games_played }}</li>
-        <li>Wins: {{ user.wins }}</li>
-        <li>Losses: {{ user.losses }}</li>
-    </ul>
+    <div class="container d-flex mt-5 pt-5 align-items-center flex-column">
+        <h2>{{ user.username|capitalize }}'s Profile</h2>
+        <span><a href="/">Home</a> / <a href="/logout">Log out</a></span>
+        <ul class="m-3">
+            <li>Games Played: {{ user.games_played }}</li>
+            <li>Wins: {{ user.wins }}</li>
+            <li>Losses: {{ user.losses }}</li>
+        </ul>
+    </div>
 {% endblock %}

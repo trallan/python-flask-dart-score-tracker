@@ -1,49 +1,52 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    <h1>Dart Score Tracker</h1>
-    {% if user_id %}
-        <p>You are logged in as {{ user_name.capitalize() }}. <a href="/logout">Log out</a>.</p>
-        <p>Go to profile <a href="/profile">page</a>.</p>
-        <h3>Latest Matches</h3>
+    <div class="container mt-5 pt-5 d-flex justify-content-center align-items-center flex-column">
+        <h1>Dart Score Tracker</h1>
+        {% if user_id %}
+        <span>You are logged in as {{ user_name.capitalize() }}. <a href="/logout">Log out</a>.</span>
+        <span>Go to profile <a href="/profile">page</a>.</span>
+            
+            <h3 class="m-4">Latest Matches</h3>
 
-        <table class="table table-striped table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Winner</th>
-                    <th>Loser</th>
-                    <th>Score</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                
-            </tbody>
-        </table>
-    {% else %}
-        You are not logged in. <a href="/login">Log in</a>.
-    {% endif %}
+            <table class="table table-striped table-dark table-hover w-50">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>Winner</th>
+                        <th>Loser</th>
+                        <th>Score</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    
+                </tbody>
+            </table>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    getMatches();
+                });
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            getMatches();
-        });
-
-        async function getMatches(){
-            let response = await fetch('/matches');
-            let matches = await response.json();
-            let html = '';
-            for (let match of matches) {
-                html += `
-                <tr>
-                    <td>${match.winner}</td>
-                    <td>${match.loser}</td>
-                    <td>${match.score}</td>
-                    <td>${match.date}</td>
-                </tr>
-                `
-            }
-            document.querySelector('tbody').innerHTML = html;
-        }
-    </script>
+                async function getMatches(){
+                    let response = await fetch('/matches');
+                    let matches = await response.json();
+                    let html = '';
+                    for (let match of matches) {
+                        html += `
+                        <tr>
+                            <td>${match.winner}</td>
+                            <td>${match.loser}</td>
+                            <td>${match.score}</td>
+                            <td>${match.date}</td>
+                        </tr>
+                        `
+                    }
+                    document.querySelector('tbody').innerHTML = html;
+                }
+            </script>
+        {% else %}
+            <span>Click <a href="/login">here</a> to login.</span>
+        {% endif %}
+    </div>
+    
 {% endblock %}

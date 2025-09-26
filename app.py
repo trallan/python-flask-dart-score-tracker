@@ -49,7 +49,7 @@ def logout():
 @app.route("/matches")
 def matches():
     if 'user_id' not in session:
-        return redirect('/')
+        return jsonify({"error": "Not logged in"}), 401
      
     all_matches = Match.query.all()
     return jsonify([
