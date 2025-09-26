@@ -13,15 +13,15 @@ A simple web application for tracking daily dart games between friends. Built wi
 - Responsive design using Bootstrap (optional)
 
 ## Folder Structure
-  ├── app.py # Main Flask app
-  ├── models/ # SQLAlchemy models
-  ├── templates/ # HTML (Jinja2) templates
-  ├── static/ # CSS/JS files
-  ├── instance/ # SQLite DB & config (ignored)
-  ├── flask_session/ # Server-side session files (ignored)
-  ├── venv/ # Virtual environment (ignored)
-  ├── requirements.txt # Python dependencies
-  ├── README.md # You're reading it
+  ├── app.py # Main Flask app  
+  ├── models/ # SQLAlchemy models  
+  ├── templates/ # HTML (Jinja2) templates  
+  ├── static/ # CSS/JS files  
+  ├── instance/ # SQLite DB & config (ignored)  
+  ├── flask_session/ # Server-side session files (ignored)  
+  ├── venv/ # Virtual environment (ignored)  
+  ├── requirements.txt # Python dependencies  
+  ├── README.md # You're reading it  
 
 ## 🛠️ Tech Stack
 
