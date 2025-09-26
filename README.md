@@ -23,7 +23,7 @@ A simple web application for tracking daily dart games between friends. Built wi
   ├── requirements.txt # Python dependencies  
   ├── README.md # You're reading it  
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Python 3**
 - **Flask** (Web Framework)
@@ -33,7 +33,7 @@ A simple web application for tracking daily dart games between friends. Built wi
 - **HTML + JS** (Frontend with fetch API)
 - **Bootstrap** *(optional)*
 
-## 🧪 How to Run
+## How to Run
 
 ### 1. Clone the repo
 ```bash
