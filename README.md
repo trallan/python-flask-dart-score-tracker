@@ -17,7 +17,7 @@ A simple web application for tracking daily dart games between friends. Built wi
   ├── models/ # SQLAlchemy models  
   ├── templates/ # HTML (Jinja2) templates  
   ├── static/ # CSS/JS files  
-  ├── instance/ # SQLite DB & config (ignored)  
+  ├── instance/ # SQLite DB & config 
   ├── flask_session/ # Server-side session files (ignored)  
   ├── venv/ # Virtual environment (ignored)  
   ├── requirements.txt # Python dependencies  
