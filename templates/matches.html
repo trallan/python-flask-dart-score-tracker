@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    {% for match in matches %}
+        <li>{{ match.score }}</li> 
+    {% endfor %}
+    
+{% endblock %}

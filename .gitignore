@@ -1,0 +1,15 @@
+# Virtual environment
+venv/
+
+# Flask session files (server-side sessions)
+flask_session/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Environment variables
+.env
+
+# Compiled files
+*.pyc

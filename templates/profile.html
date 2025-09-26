@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h2>{{ user.username|capitalize }}'s Profile</h2>
+    <a href="/">Home</a> / <a href="/logout">Log out</a>
+    <ul>
+        <li>Games Played: {{ user.games_played }}</li>
+        <li>Wins: {{ user.wins }}</li>
+        <li>Losses: {{ user.losses }}</li>
+    </ul>
+{% endblock %}
