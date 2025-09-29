@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <div class="container vh-100 d-flex justify-content-center align-items-center">
+        <div class="">
+            <form action="/addscore" method="post">
+                <fieldset>
+                    <legend>Add Score</legend>
+                    <div class="mb-3">
+                        <label for="winner" class="form-label">Winner Name</label>
+                        <input class="form-control" required name="winner" type="text">
+                    </div>
+                    <div class="mb-3">
+                        <label for="loser" class="form-label">Loser Name</label>
+                        <input class="form-control" required name="loser" type="text">
+                    </div>
+                    <div class="mb-3">
+                        <label for="score" class="form-label">Score</label>
+                        <input class="form-control" autocomplete="off" required name="score" type="text">
+                    </div>
+                    
+                    <a style="color: rgb(255, 90, 61); text-decoration: none;" href="/">Cancel</a>
+                    <button class="btn btn-primary" type="submit">Add score</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}

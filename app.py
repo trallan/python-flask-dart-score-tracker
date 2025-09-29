@@ -3,6 +3,7 @@ from flask_session import Session
 from models import db
 from models.models import Match, User
 
+
 app = Flask(__name__)
 
 app.config["SESSION_PERMANENT"] = False
@@ -12,6 +13,35 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 Session(app)
 db.init_app(app)
+
+@app.route('/addscore', methods=["GET", "POST"])
+def add_score():
+    if session.get('user_name') != 'john':
+        return "Unauthorized", 403
+    
+    if request.method == 'POST':
+        score = request.form.get('score')
+        winner_username = request.form.get('winner').lower()
+        loser_username = request.form.get('loser').lower()
+
+        winner = User.query.filter_by(username=winner_username).first()
+        loser = User.query.filter_by(username=loser_username).first()
+
+        if not winner:
+            return "Winner not found", 400
+        if not loser:
+            return "Loser not found", 400
+        
+        new_match = Match(
+            winner_id=winner.id,
+            loser_id=loser.id,
+            score=score
+        )
+        db.session.add(new_match)
+        db.session.commit()
+
+        return redirect('/')
+    return render_template('addscore.html')
 
 @app.route('/profile')
 def profile():
@@ -64,5 +94,15 @@ def matches():
     ])
 
 
+def create_user():
+    with app.app_context():
+        db.create_all()
+        user = User(username='eddie', email='eddie@example.com')
+        user.set_password('Edzon123')
+        db.session.add(user)
+        db.session.commit()
+        print("User created!")
+
 if __name__ == '__main__':
+    # create_user()
     app.run(debug=True)
