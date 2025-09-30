@@ -1,6 +1,9 @@
 # Virtual environment
 venv/
 
+# Tests
+test.txt
+
 # Flask session files (server-side sessions)
 flask_session/
 

@@ -93,16 +93,5 @@ def matches():
         for m in all_matches
     ])
 
-
-def create_user():
-    with app.app_context():
-        db.create_all()
-        user = User(username='eddie', email='eddie@example.com')
-        user.set_password('Edzon123')
-        db.session.add(user)
-        db.session.commit()
-        print("User created!")
-
 if __name__ == '__main__':
-    # create_user()
     app.run(debug=True)
