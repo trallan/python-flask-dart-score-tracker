@@ -6,7 +6,7 @@
         {% if user_id %}
         <span>You are logged in as {{ user_name.capitalize() }}. <a href="/logout">Log out</a>.</span>
         <span>Go to profile <a href="/profile">page</a>.</span>
-        {% if user_name == 'john' %}
+        {% if user_role == 'admin' %}
         <span><a href="/addscore">Add Score</a></span>
         {% endif %}
             

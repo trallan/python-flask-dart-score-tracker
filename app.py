@@ -3,7 +3,6 @@ from flask_session import Session
 from models import db
 from models.models import Match, User
 
-
 app = Flask(__name__)
 
 app.config["SESSION_PERMANENT"] = False
@@ -16,7 +15,7 @@ db.init_app(app)
 
 @app.route('/addscore', methods=["GET", "POST"])
 def add_score():
-    if session.get('user_name') != 'john':
+    if session.get('user_role') != 'admin':
         return "Unauthorized", 403
     
     if request.method == 'POST':
@@ -53,7 +52,7 @@ def profile():
 
 @app.route("/")
 def index():
-    return render_template("index.html", user_id=session.get('user_id'), user_name=session.get('user_name'))
+    return render_template("index.html", user_id=session.get('user_id'), user_name=session.get('user_name'), user_role=session.get('user_role'))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -65,6 +64,7 @@ def login():
         if user and user.check_password(password):
             session['user_id'] = user.id
             session['user_name'] = user.username
+            session['user_role'] = user.role
             return redirect('/')
         else:
             flash('Invalid username or password')
