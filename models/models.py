@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 from models import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -39,7 +40,7 @@ class Match(db.Model):
     winner_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
     loser_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=True)
     score = db.Column(db.String(10), nullable=False)
-    date = db.Column(db.DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    date = db.Column(db.DateTime(timezone=True), default=lambda: datetime.now(ZoneInfo("Europe/Paris")))
     
     winner = db.relationship('User', foreign_keys=[winner_id], backref='won_matches')
     loser = db.relationship('User', foreign_keys=[loser_id], backref='lost_matches')
