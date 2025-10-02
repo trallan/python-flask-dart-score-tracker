@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect, jsonify, f
 from flask_session import Session
 from models import db
 from models.models import Match, User
+import re
 
 app = Flask(__name__)
 
@@ -22,6 +23,10 @@ def add_score():
         score = request.form.get('score')
         winner_username = request.form.get('winner').lower()
         loser_username = request.form.get('loser').lower()
+
+        # Validate score format using regex
+        if not re.fullmatch(r'\d+-\d+', score):
+            return "Invalid score format. Use format 'X-Y' with numbers only, no spaces.", 400
 
         winner = User.query.filter_by(username=winner_username).first()
         loser = User.query.filter_by(username=loser_username).first()
