@@ -1,12 +1,12 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="vh-100 mx-3 d-flex align-items-center justify-content-center">
+<div class="mx-3">
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row d-flex justify-content-center" style="margin-top: 8rem;">
             <div class="col-12 col-md-8 col-lg-6">
-                <section class="d-flex h-100 justify-content-center align-items-center flex-column p-4">
-                    <div class="d-flex flex-column align-items-center text-center m-5">
+                <section class="h-100 px-4">
+                    <div class="text-center mb-5">
                         <h2>{{ user.username|capitalize }}</h2>
                         <p>Player Profile</p>
                         <span><a href="/">Home</a> / <a href="/logout">Log out</a></span>
@@ -22,7 +22,7 @@
                         </div>
                         <div class="pt-4 d-flex flex-column align-items-center">
                             {% if (user.wins + user.losses) > 0 %}
-                                <li><strong>{{ (user.wins / (user.wins + user.losses)) * 100 | round(0, 'common') | int }}% Win Rate</strong></li>
+                                <li><strong>{{ user_win_rate }}% Win Rate</strong></li>
                             {% else %}
                                 <li><strong>0% Win Rate</strong></li>
                             {% endif %}

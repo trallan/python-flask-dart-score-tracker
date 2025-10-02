@@ -33,21 +33,34 @@
                         getMatches();
                     });
 
-                    async function getMatches(){
-                        let response = await fetch('/matches');
-                        let matches = await response.json();
-                        let html = '';
-                        for (let match of matches) {
-                            html += `
-                            <tr>
-                                <td>${match.winner}</td>
-                                <td>${match.loser}</td>
-                                <td>${match.score}</td>
-                                <td>${match.date}</td>
-                            </tr>
-                            `
+                    async function getMatches() {
+                        try {
+                            const response = await fetch('/matches');
+
+                            if (!response.ok) {
+                                const errorData = await response.json();
+                                throw new Error(errorData.error || 'Failed to fetch matches.');
+                            }
+
+                            const matches = await response.json();
+                            let html = '';
+                            for (let match of matches) {
+                                html += `
+                                    <tr>
+                                        <td>${match.winner || 'N/A'}</td>
+                                        <td>${match.loser || 'N/A'}</td>
+                                        <td>${match.score}</td>
+                                        <td>${match.date}</td>
+                                    </tr>
+                                `;
+                            }
+                            document.querySelector('tbody').innerHTML = html;
+                        } catch (error) {
+                            document.querySelector('tbody').innerHTML = `
+                                <tr><td colspan="4">Error loading matches: ${error.message}</td></tr>
+                            `;
+                            console.error('Error fetching matches:', error);
                         }
-                        document.querySelector('tbody').innerHTML = html;
                     }
                 </script>
             {% else %}

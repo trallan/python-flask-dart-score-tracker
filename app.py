@@ -48,7 +48,8 @@ def profile():
         return redirect('/login')
     
     user = User.query.get(session['user_id'])
-    return render_template('profile.html', user=user)
+    user_win_rate = round((user.wins / (user.wins + user.losses)) * 100)
+    return render_template('profile.html', user=user, user_win_rate=user_win_rate)
 
 @app.route("/")
 def index():
