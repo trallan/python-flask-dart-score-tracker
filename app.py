@@ -25,7 +25,7 @@ def add_score():
         loser_username = request.form.get('loser').lower()
 
         # Validate score format using regex
-        if not re.fullmatch(r'\d+-\d+', score):
+        if not re.fullmatch(r'(0|[1-9]\d*)-(0|[1-9]\d*)', score):
             return "Invalid score format. Use format 'X-Y' with numbers only, no spaces.", 400
 
         winner = User.query.filter_by(username=winner_username).first()
