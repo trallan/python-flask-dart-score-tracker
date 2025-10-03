@@ -58,6 +58,8 @@ def profile():
 
 @app.route("/")
 def index():
+    if 'user_id' not in session:
+        return redirect('/login')
     return render_template("index.html", user_id=session.get('user_id'), user_name=session.get('user_name'), user_role=session.get('user_role'))
 
 @app.route("/login", methods=["GET", "POST"])
