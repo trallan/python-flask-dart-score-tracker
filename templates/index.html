@@ -38,6 +38,9 @@
                         }
 
                         const matches = await response.json();
+                        
+                        matches.reverse()
+                        
                         let html = '';
                         for (let match of matches) {
                             html += `
