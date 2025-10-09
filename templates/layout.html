@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
     <link href="https://cdn.lineicons.com/5.0/lineicons.css" rel="stylesheet" />
     <title>Dart Score Tracker</title>
@@ -23,7 +24,10 @@
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
                     <li class="nav-item"><a class="nav-link" href="/scoreboard">Scoreboard</a></li>
+                    {% if session['user_role'] == 'admin' %}
                     <li class="nav-item"><a class="nav-link" href="/addscore">Add Score</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/adminpanel">Admin Panel</a></li>
+                    {% endif %}
                     <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
                 </ul>
             </div>

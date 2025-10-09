@@ -2,6 +2,7 @@
 venv/
 
 # Tests
+tests/
 test.txt
 
 # Flask session files (server-side sessions)
