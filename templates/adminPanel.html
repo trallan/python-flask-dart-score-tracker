@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container mt-5 pt-5">
+    <div>
+        <h1>Admin Panel</h1>
+        <p>Manage users and match records</p>
+    </div>
+    <div class="p-4 border border-secondary rounded">
+        <h5>Create New User</h5>
+        <p>Add a new user to the system</p>
+        <form action="/adduser" method="post">
+            <div class="row g-3">
+                <div class="col-6">
+                    <label class="form-label">Username</label>
+                    <input class="form-control"/>
+                </div>
+                <div class="col-6">
+                    <label class="form-label">Password</label>
+                    <input class="form-control"/>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-6">
+                    <label class="form-label">Email</label>
+                    <input class="form-control"/>
+                </div>
+                <div class="col-6">
+                    <label class="form-label">Role</label>
+                    <select class="form-select">
+                        <option value="admin">Admin</option>
+                        <option value="moderator">Moderator</option>
+                        <option value="user">User</option>
+                        <option value="guest">Guest</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-light mt-3" type="submit">Create User</button>
+        </form>
+    </div>
+    
+</div>
+    
+{% endblock %}

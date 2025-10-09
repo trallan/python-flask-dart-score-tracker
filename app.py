@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, session, redirect, jsonify, flash
+from routes import register_blueprints
 from flask_session import Session
 from models import db
 from models.models import Match, User
 import re
 
 app = Flask(__name__)
+register_blueprints(app)
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -16,7 +18,7 @@ db.init_app(app)
 
 @app.route('/addscore', methods=["GET", "POST"])
 def add_score():
-    if session.get('user_role') != 'admin':
+    if session.get('user_role') != 'admin' or 'moderator':
         return "Unauthorized", 403
     
     if request.method == 'POST':
