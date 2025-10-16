@@ -139,7 +139,7 @@
                             <td>{{ match.loser.username|capitalize }}</td>
                             <td>{{ match.score}}</td>
                             <td>
-                                <form class="d-inline" action="{{ url_for('delete_match', match_id=match.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                <form class="d-inline" action="{{ url_for('delete_match', match_id=match.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this match?');">
                                     <button class="btn btn-dark btn-sm">
                                         <i class="bi bi-trash"></i>
                                     </button>
