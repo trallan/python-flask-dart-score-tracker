@@ -41,8 +41,8 @@
                 for (let match of matches) {
                     html += `
                         <tr>
-                            <td>${match.winner || 'N/A'}</td>
-                            <td>${match.loser || 'N/A'}</td>
+                            <td>${match.winner.capitalize() || 'N/A'}</td>
+                            <td>${match.loser.capitalize() || 'N/A'}</td>
                             <td>${match.score}</td>
                             <td>${match.date}</td>
                         </tr>
@@ -61,4 +61,13 @@
         <span>Click <a href="/login">here</a> to login.</span>
     {% endif %}
 </div>
+
+<script>
+    Object.defineProperty(String.prototype, 'capitalize', {
+        value: function() {
+            return this.charAt(0).toUpperCase() + this.slice(1);
+        },
+        enumerable: false
+    });
+</script>
 {% endblock %}

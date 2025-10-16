@@ -15,7 +15,7 @@
        <tbody>
             {% for user in user_stats %}
             <tr>
-                <td>{{ user.username }}</td>
+                <td>{{ user.username|capitalize }}</td>
                 <td>{{ user.score }}</td>
                 <td>{{ user.matches }}</td>
                 <td>#{{ user.rank }}</td>
