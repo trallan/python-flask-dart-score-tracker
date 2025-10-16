@@ -24,8 +24,10 @@
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
                     <li class="nav-item"><a class="nav-link" href="/scoreboard">Scoreboard</a></li>
-                    {% if session['user_role'] == 'admin' %}
+                    {% if session['user_role'] == 'moderator' %}
                     <li class="nav-item"><a class="nav-link" href="/addscore">Add Score</a></li>
+                    {% endif %}
+                    {% if session['user_role'] == 'admin' %}
                     <li class="nav-item"><a class="nav-link" href="/adminpanel">Admin Panel</a></li>
                     {% endif %}
                     <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>

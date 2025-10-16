@@ -10,15 +10,14 @@
         {% endfor %}
     </div>
     <p class="d-inline-flex gap-1 bg-secondary rounded-pill d-flex justify-content-evenly">
-        <button class="btn btn-light ms-1 my-1 rounded-pill border-secondary" data-bs-toggle="collapse" href="#userPanel" role="button" aria-expanded="false" aria-controls="userPanel">
+        <button id="ap-user-btn" class="btn bg-light ms-1 my-1 rounded-pill border-secondary" type="button">
            <i class="bi bi-people"></i> User
         </button>
-        <button class="btn btn-light me-1 my-1 rounded-pill border-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#matchesPanel" aria-expanded="false" aria-controls="matchesPanel">
+        <button id="ap-matches-btn" class="btn me-1 my-1 rounded-pill border-secondary" type="button">
             <i class="bi bi-trophy"></i> Matches
         </button>
     </p>
-    <div id="accordion">
-        <div class="collapse show" id="userPanel" data-bs-parent="#accordion">
+        <div class="" style="display:block;" id="userPanel">
             <div class="p-4 border border-secondary rounded">
                 <h5>Create New User</h5>
                 <p>Add a new user to the system</p>
@@ -26,7 +25,7 @@
                     <div class="row g-3">
                         <div class="col-6">
                             <label class="form-label">Username</label>
-                            <input class="form-control" autocomplete="off" required name="username" type="text"/>
+                            <input class="form-control" autocomplete="off" autofocus required name="username" type="text"/>
                         </div>
                         <div class="col-6">
                             <label class="form-label">Password</label>
@@ -122,23 +121,33 @@
                 
             </div>
         </div>
-        <div class="collapse" id="matchesPanel" data-bs-parent="#accordion">
+        <div style="display: none;" class="" id="matchesPanel">
             <div class="p-4 border border-secondary rounded">
                 <h5>Create New Match</h5>
                 <p>Record a new match result</p>
-                <form action="/addmatch" method="post">
+                <form action="/addscore" method="post">
                     <div class="row g-3">
                         <div class="col-4">
-                            <label class="form-label">Winner</label>
-                            <input class="form-control" placeholder="ex. John"/>
+                            <label class="form-label" for="winner">Winner</label>
+                             <select class="form-select" name="winner" required>
+                                <option value="" disabled selected>Select winner</option>
+                                {% for user in users %}
+                                    <option value="{{ user.username }}">{{ user.username }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="col-4">
-                            <label class="form-label">Loser</label>
-                            <input class="form-control" placeholder="ex. Doe"/>
+                            <label class="form-label" for="loser">Loser</label>
+                            <select class="form-select" name="loser" required>
+                                <option value="" disabled selected>Select loser</option>
+                                {% for user in users %}
+                                    <option value="{{ user.username }}">{{ user.username }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="col-4">
-                            <label class="form-label">Score</label>
-                            <input class="form-control" placeholder="e.g., 3-1"/>
+                            <label class="form-label" for="score">Score</label>
+                            <input class="form-control" name="score" required placeholder="e.g., 3-1"/>
                         </div>
                     </div>
                 
@@ -170,54 +179,94 @@
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
-                                <form class="d-inline">
-                                    <button class="btn btn-dark btn-sm">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                </form>
+                                <button class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#editMatchModal-{{ match.id }}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
                             </td>
                         </tr>
+                        <div class="modal fade" id="editMatchModal-{{ match.id }}" tabindex="-1" aria-labelledby="editMatchLabel-{{ match.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form action="{{ url_for('edit_match', match_id=match.id) }}" method="POST">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="editMatchLabel-{{ match.id }}">Edit Match</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label class="form-label">Winner</label>
+                                                <select class="form-select" name="winner" required>
+                                                    {% for user in users %}
+                                                        <option value="{{ user.id }}" {% if user.id == match.winner_id %}selected{% endif %}>
+                                                            {{ user.username }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Loser</label>
+                                                <select class="form-select" name="loser" required>
+                                                    {% for user in users %}
+                                                        <option value="{{ user.id }}" {% if user.id == match.loser_id %}selected{% endif %}>
+                                                            {{ user.username }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Score</label>
+                                                <input type="text" class="form-control" name="score" value="{{ match.score }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                         {% endfor %}
                     </tbody>
                 </table>
                 
             </div>
         </div>
-    </div>
     
 </div>
 
+
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const buttons = document.querySelectorAll('[data-bs-toggle="collapse"]');
+    const apUserBtn = document.querySelector('#ap-user-btn');
+    const apMatchesBtn = document.querySelector('#ap-matches-btn');
+    const userPanel = document.querySelector('#userPanel');
+    const matchesPanel = document.querySelector('#matchesPanel');
 
-        function updateButtonStyles(targetId) {
-            buttons.forEach(btn => {
-                const btnTarget = btn.getAttribute('data-bs-target') || btn.getAttribute('href');
-                if (btnTarget === targetId) {
-                    btn.classList.add('bg-light', 'text-dark');
-                    btn.classList.remove('bg-secondary', 'text-white');
-                } else {
-                    btn.classList.add('bg-secondary', 'text-white');
-                    btn.classList.remove('bg-light', 'text-dark');
-                }
-            });
-        }
+    apUserBtn.addEventListener("click", () => {
+        userPanel.style.display = 'block';
+        matchesPanel.style.display = 'none';
+        history.replaceState(null, null, '#userPanel');
+        apUserBtn.classList.add('bg-light', 'text-dark');
+        apMatchesBtn.classList.remove('bg-light', 'text-dark');
+    });
 
-        buttons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const targetId = btn.getAttribute('data-bs-target') || btn.getAttribute('href');
-                updateButtonStyles(targetId);
-            });
-        });
+    apMatchesBtn.addEventListener("click", () => {
+        userPanel.style.display = 'none';
+        matchesPanel.style.display = 'block';
+        history.replaceState(null, null, '#matchesPanel');
+        apMatchesBtn.classList.add('bg-light', 'text-dark');
+        apUserBtn.classList.remove('bg-light', 'text-dark');
+    });
 
-        // Initialize on page load
-        const firstVisible = document.querySelector('.collapse.show');
-        if (firstVisible) {
-            updateButtonStyles(`#${firstVisible.id}`);
+    window.addEventListener('DOMContentLoaded', () => {
+        if (window.location.hash === '#matchesPanel') {
+            apMatchesBtn.click();
+        } else if (window.location.hash === '#userPanel') {
+            apUserBtn.click();
         }
     });
 </script>
+
 
     
 {% endblock %}

@@ -8,15 +8,25 @@
                     <legend>Add Score</legend>
                     <div class="mb-3">
                         <label for="winner" class="form-label">Winner Name</label>
-                        <input class="form-control" required name="winner" type="text">
+                        <select class="form-select" name="winner" required>
+                            <option value="" disabled selected>Select winner</option>
+                            {% for user in users %}
+                                <option value="{{ user.username }}">{{ user.username }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="loser" class="form-label">Loser Name</label>
-                        <input class="form-control" required name="loser" type="text">
+                        <select class="form-select" name="loser" required>
+                            <option value="" disabled selected>Select loser</option>
+                            {% for user in users %}
+                                <option value="{{ user.username }}">{{ user.username }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="score" class="form-label">Score</label>
-                        <input class="form-control" autocomplete="off" required name="score" type="text">
+                        <input class="form-control" autocomplete="off" required name="score" type="text" placeholder="e.g., 2-1">
                     </div>
                     
                     <a style="color: rgb(255, 90, 61); text-decoration: none;" href="/">Cancel</a>

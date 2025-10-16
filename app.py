@@ -18,6 +18,44 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 60 * 60 * 24 # Caches static files for
 Session(app)
 db.init_app(app)
 
+@app.route('/editmatch/<int:match_id>', methods=['POST'])
+def edit_match(match_id):
+    if session.get('user_role') != 'admin':
+        return "Unauthorized", 403
+
+    match = Match.query.get_or_404(match_id)
+
+    try:
+        winner_id = int(request.form.get('winner'))
+        loser_id = int(request.form.get('loser'))
+    except (TypeError, ValueError):
+        flash("Invalid winner or loser selection.", "danger")
+        return redirect(url_for('adminPanel.adminPanel') + '#matchesPanel')
+
+    score = request.form.get('score')
+
+    # Get user objects
+    winner_user = User.query.get(winner_id)
+    loser_user = User.query.get(loser_id)
+
+    if not winner_user or not loser_user:
+        flash("Winner or loser not found.", "danger")
+        return redirect(url_for('adminPanel.adminPanel') + '#matchesPanel')
+
+    if winner_id == loser_id:
+        flash("Winner and loser must be different users.", "danger")
+        return redirect(url_for('adminPanel.adminPanel') + '#matchesPanel')
+
+    match.winner_id = winner_id
+    match.loser_id = loser_id
+    match.score = score
+    db.session.commit()
+
+    flash(f"Match updated: {winner_user.username} vs {loser_user.username}", "success")
+    return redirect(url_for('adminPanel.adminPanel') + '#matchesPanel')
+
+
+
 @app.route('/edituser/<int:user_id>', methods=['POST'])
 def edit_user(user_id):
     if session.get('user_role') != 'admin':
@@ -58,12 +96,12 @@ def delete_match(match_id):
     match = Match.query.get(match_id)
     if not match:
         flash("Match not found.", "warning")
-        return redirect(url_for('adminPanel.adminPanel'))
+        return redirect(url_for('adminPanel.adminPanel') + '#matchesPanel')
 
     db.session.delete(match)
     db.session.commit()
     flash("Match deleted successfully.", "success")
-    return redirect(url_for('adminPanel.adminPanel'))
+    return redirect(url_for('adminPanel.adminPanel') + '#matchesPanel')
 
 @app.route('/deletuser/<int:user_id>', methods=["POST"])
 def delete_user(user_id):
@@ -118,12 +156,15 @@ def add_user():
 @app.route('/addscore', methods=["GET", "POST"])
 def add_score():
     if session.get('user_role') not in ['admin', 'moderator']:
-        return "Unauthorized", 403
+        abort(404)
+
+    user_session = session.get('user_role')
+    users = User.query.all()
     
-    if request.method == 'POST':
-        score = request.form.get('score')
+    if request.method == 'POST':  
         winner_username = request.form.get('winner').lower()
         loser_username = request.form.get('loser').lower()
+        score = request.form.get('score')
 
         # Validate score format using regex
         if not re.fullmatch(r'(0|[1-9]\d*)-(0|[1-9]\d*)', score):
@@ -133,9 +174,11 @@ def add_score():
         loser = User.query.filter_by(username=loser_username).first()
 
         if not winner:
-            return "Winner not found", 400
+            flash("All fields are required.", "danger")
+            return redirect(url_for('adminPanel.adminPanel'))
         if not loser:
-            return "Loser not found", 400
+            flash("All fields are required.", "danger")
+            return redirect(url_for('adminPanel.adminPanel'))
         
         new_match = Match(
             winner_id=winner.id,
@@ -145,8 +188,13 @@ def add_score():
         db.session.add(new_match)
         db.session.commit()
 
-        return redirect('/')
-    return render_template('addscore.html')
+        if user_session == 'moderator':
+            return redirect('/')
+
+        return redirect(url_for('adminPanel.adminPanel') + '#matchesPanel')
+    if user_session == 'moderator':
+            return render_template('addscore.html', users=users)
+    return redirect(url_for('adminPanel.adminPanel') + '#matchesPanel')
 
 @app.route('/profile')
 def profile():
