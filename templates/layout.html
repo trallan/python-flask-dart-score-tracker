@@ -11,8 +11,8 @@
 </head>
 <body class="bg-dark text-white text-opacity-75">
     {% if session['user_id'] %}
-    <nav class="navbar navbar-expand-sm fixed-top navbar-dark bg-dark border-bottom border-secondary">
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark border-bottom border-secondary">
+        <div class="container">
             <a class="navbar-brand" href="/">
                 <img src="/static/images/brand.png" width="160" height="40" />
             </a>
@@ -20,7 +20,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
                     <li class="nav-item"><a class="nav-link" href="/scoreboard">Scoreboard</a></li>
