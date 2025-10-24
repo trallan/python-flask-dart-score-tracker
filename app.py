@@ -242,18 +242,38 @@ def logout():
 def matches():
     if 'user_id' not in session:
         return jsonify({"error": "Not logged in"}), 401
-     
-    all_matches = Match.query.all()
-    return jsonify([
-        {
-            'id': m.id,
-            'score': m.score,
-            'date': m.date.strftime("%Y-%m-%d %H:%M:%S"),
-            'winner': m.winner.username if m.winner else None,
-            'loser': m.loser.username if m.loser else None
-        }
-        for m in all_matches
-    ])
+
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+
+    # Query total count for pagination
+    total_matches = Match.query.count()
+    total_pages = (total_matches + per_page - 1) // per_page
+
+    # Fetch only the rows needed for this page
+    paginated_matches = (
+        Match.query
+        .order_by(Match.date.desc())
+        .offset((page - 1) * per_page)
+        .limit(per_page)
+        .all()
+    )
+
+    return jsonify({
+        "matches": [
+            {
+                'id': m.id,
+                'score': m.score,
+                'date': m.date.strftime("%Y-%m-%d %H:%M:%S"),
+                'winner': m.winner.username if m.winner else None,
+                'loser': m.loser.username if m.loser else None,
+            } for m in paginated_matches
+        ],
+        "page": page,
+        "total_pages": total_pages
+    })
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
