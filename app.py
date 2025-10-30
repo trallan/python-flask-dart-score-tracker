@@ -244,7 +244,7 @@ def matches():
         return jsonify({"error": "Not logged in"}), 401
 
     page = request.args.get('page', 1, type=int)
-    per_page = 10
+    per_page = 7
 
     # Query total count for pagination
     total_matches = Match.query.count()
